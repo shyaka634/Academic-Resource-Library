@@ -24,7 +24,7 @@ const bookmark= sequelize.define("Bookmark",{
         allowNull:false,
         references:{
             model:"resources",
-            type:"resource_id",
+            key:"resource_id",
         }
     },
 
@@ -38,7 +38,7 @@ const bookmark= sequelize.define("Bookmark",{
 bookmark.belongsTo(User,{foreignKey:"user_id", onDelete:"CASCADE", onUpdate:"CASCADE"})
 bookmark.belongsTo(Resource,{foreignKey:"resource_id", onDelete:"CASCADE", onUpdate:"CASCADE"})
 
-User.hasMany(bookmark,{foreignKey:"bookmark_id"})
-Resource.hasMany(bookmark,{foreignKey:"bookmark_id"})
+User.hasMany(bookmark,{foreignKey:"user_id"})
+Resource.hasMany(bookmark,{foreignKey:"resource_id"})
 
 export default bookmark;
