@@ -24,7 +24,7 @@ const bookmark= sequelize.define("Bookmark",{
         allowNull:false,
         references:{
             model:"resources",
-            type:"resource_id",
+            key:"resource_id",
         }
     },
 
