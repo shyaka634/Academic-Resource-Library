@@ -12,6 +12,9 @@ app.use(session({
     cookie:{secure:false}
 }));
 
+import bookmarkRoute from './routes/bookmarkRoute.js';
+app.use('/bookmarks', bookmarkRoute);
+
 import bookmark from './models/bookmarkModel.js'
 import resource from './models/resoucesModel.js'
 import sessions from './models/sessionModel.js'
