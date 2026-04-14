@@ -1,6 +1,8 @@
 import express from 'express'
 import session from 'express-session'
 import sequelize,{ connectDb } from './config/db.js';
+import sessionRoute from './routes/sessionRoute.js';
+
 const app= express();
 connectDb();
 app.use(express.json())
@@ -20,6 +22,13 @@ import resource from './models/resoucesModel.js'
 import sessions from './models/sessionModel.js'
 import user from './models/userModel.js'
 
+<<<<<<< HEAD
 sequelize.sync({force:true})
+=======
+// Routes
+app.use('/api/sessions', sessionRoute);
+
+sequelize.sync({alter:true})
+>>>>>>> 9692c15 (Your commit message)
 .then(()=>app.listen(2000,()=>{ console.log('Listen to port 2000 ')}))
 .then(err => console.error("sync error", err));
