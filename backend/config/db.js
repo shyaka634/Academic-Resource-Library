@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 const sequelize= new Sequelize('school_library','root','',{
     host:"localhost",
     dialect:'mysql',
-    port:3307,
+    
 });
 
 export async function connectDb(){

@@ -17,6 +17,6 @@ import resource from './models/resoucesModel.js'
 import sessions from './models/sessionModel.js'
 import user from './models/userModel.js'
 
-sequelize.sync({alter:true})
+sequelize.sync({force:true})
 .then(()=>app.listen(2000,()=>{ console.log('Listen to port 2000 ')}))
 .then(err => console.error("sync error", err));
