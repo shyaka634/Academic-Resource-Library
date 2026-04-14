@@ -1,4 +1,6 @@
 import Bookmark from "../models/bookmarkModel.js";
+import User from "../models/userModel.js";
+import Resource from "../models/resoucesModel.js";
 
 // Create a new bookmark
 export const createBookmark = async (req, res) => {
@@ -34,8 +36,8 @@ export const getBookmarksByUser = async (req, res) => {
         const bookmarks = await Bookmark.findAll({
             where: { user_id },
             include: [
-                { model: require("../models/userModel.js").default, as: "User" },
-                { model: require("../models/resoucesModel.js").default, as: "Resource" }
+                { model: User, attributes: ["user_id", "username"] },
+                { model: Resource, attributes: ["resource_id", "title", "file_url"] }
             ]
         });
 

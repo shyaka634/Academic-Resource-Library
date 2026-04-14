@@ -1,5 +1,6 @@
 import sessions from "../models/sessionModel.js";
 import User from "../models/userModel.js";
+import { Op } from "sequelize";
 
 // Create a new session
 export const createSession = async (req, res) => {
@@ -208,11 +209,9 @@ export const deleteExpiredSessions = async (req, res) => {
     const now = new Date();
 
     const result = await sessions.destroy({
-      where: sequelize.where(
-        sequelize.col("expires_at"),
-        "<=",
-        now
-      ),
+      where: {
+        expires_at: { [Op.lte]: now },
+      },
     });
 
     res.status(200).json({

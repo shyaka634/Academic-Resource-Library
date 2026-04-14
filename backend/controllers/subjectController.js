@@ -1,4 +1,4 @@
-import Subject from "../models/subjectModel.js";
+import Subject from "../models/subjectsModel.js";
 
 export const getAllSubjects = async (req, res) => {
     try {
@@ -37,6 +37,32 @@ export const deleteSubject = async (req, res) => {
         const deleted = await Subject.destroy({ where: { subject_id: req.params.id } });
         if (!deleted) return res.status(404).json({ message: "Subject not found" });
         res.status(200).json({ message: "Subject deleted" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const updateSubject = async (req, res) => {
+    try {
+        const { name, description } = req.body;
+        const subject = await Subject.findByPk(req.params.id);
+
+        if (!subject) {
+            return res.status(404).json({ message: "Subject not found" });
+        }
+
+        if (name && name !== subject.name) {
+            const existingSubject = await Subject.findOne({ where: { name } });
+            if (existingSubject) {
+                return res.status(400).json({ message: "Subject already exists" });
+            }
+        }
+
+        subject.name = name ?? subject.name;
+        subject.description = description ?? subject.description;
+        await subject.save();
+
+        res.status(200).json(subject);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

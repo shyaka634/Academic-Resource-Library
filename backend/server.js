@@ -3,21 +3,25 @@ import session from 'express-session'
 import cors from 'cors'
 import sequelize,{ connectDb } from './config/db.js';
 import sessionRoute from './routes/sessionRoute.js';
+import authRoutes from './routes/authRoute.js'
+import bookmarkRoute from './routes/bookmarkRoute.js';
+import resourceRoute from './routes/resourceRoute.js';
+import subjectRoute from './routes/subjectRoute.js';
 
 const app = express();
 connectDb();
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}))
 
 app.use(session({
     secret: "my banana plantation",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: { secure: false, sameSite: "lax" }
 }));
-
-import bookmarkRoute from './routes/bookmarkRoute.js';
-app.use('/bookmarks', bookmarkRoute);
 
 import bookmark from './models/bookmarkModel.js'
 import resource from './models/resoucesModel.js'
@@ -40,10 +44,11 @@ resource.hasMany(bookmark, { foreignKey: 'resource_id' });
 sessions.belongsTo(user, { foreignKey: 'user_id' });
 user.hasMany(sessions, { foreignKey: 'user_id' });
 
-import authRoutes from './routes/authRoute.js'
-
 app.use('/api/sessions', sessionRoute);
 app.use('/api/auth', authRoutes)
+app.use('/api/bookmarks', bookmarkRoute);
+app.use('/api/resources', resourceRoute);
+app.use('/api/subjects', subjectRoute);
 
 sequelize.sync({alter:true})
 .then(()=>{ app.listen(2000,()=>{ console.log('Listen to port 2000 ')})})
